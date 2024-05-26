@@ -4,6 +4,7 @@ import {
   TETROMINO_NAMES,
   TETROMINOS,
   getRandomElement,
+  rotateMatrix,
 } from "./utilities.js";
 
 export class Tetris {
@@ -46,5 +47,75 @@ export class Tetris {
       row,
       column,
     };
+  }
+
+  /**
+   * Method to move tetromino down.
+   */
+  moveTetrominoDown() {
+    this.tetromino.row += 1;
+    if (!this.isValid()) {
+      this.tetromino.row -= 1;
+    }
+  }
+
+  /**
+   * Method to move tetromino left.
+   */
+  moveTetrominoLeft() {
+    this.tetromino.column -= 1;
+    if (!this.isValid()) {
+      this.tetromino.column += 1;
+    }
+  }
+
+  /**
+   * Method to move tetromino right.
+   */
+  moveTetrominoRight() {
+    this.tetromino.column += 1;
+    if (!this.isValid()) {
+      this.tetromino.column -= 1;
+    }
+  }
+
+  /**
+   * Method to rotate tetromino.
+   */
+  rotateTetromino() {
+    const oldMatrix = this.tetromino.matrix;
+    const rotatedMatrix = rotateMatrix(this.tetromino.matrix);
+    this.tetromino.matrix = rotatedMatrix;
+    if (!this.isValid()) {
+      this.tetromino.matrix = oldMatrix;
+    }
+  }
+
+  /**
+   * Method to check if tetromino is valid
+   */
+  isValid() {
+    const matrixSize = this.tetromino.matrix.length;
+    for (let row = 0; row < matrixSize; row++) {
+      for (let column = 0; column < matrixSize; column++) {
+        if (!this.tetromino.matrix[row][column]) continue;
+        if (this.isOutsideOfGameBoard(row, column)) return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Method to check if tetromino is not outside of the game board.
+   * @param {Number} row
+   * @param {Number} column
+   * @returns true/false
+   */
+  isOutsideOfGameBoard(row, column) {
+    return (
+      this.tetromino.column + column < 0 ||
+      this.tetromino.column + column >= PLAYFIELD_COLUMS ||
+      this.tetromino.row + row >= this.playfield.length
+    );
   }
 }

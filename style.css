@@ -70,5 +70,5 @@ body {
 .grid > div.Z,
 .grid > div.T {
   box-shadow: inset 2px 2px 2px rgba(255, 255, 255, 0.2),
-  inset -2px -2px 2px rgba(1, 8, 89, 0.2)
+    inset -2px -2px 2px rgba(1, 8, 89, 0.2);
 }
