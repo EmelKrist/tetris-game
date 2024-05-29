@@ -46,6 +46,10 @@ function moveDown() {
   draw();
   stopLoop();
   startLoop();
+
+  if (tetris.isGameOver) {
+    gameOver();
+  }
 }
 
 /**
@@ -137,4 +141,12 @@ function drawTetromino() {
       cells[cellIndex].classList.add(name);
     }
   }
+}
+
+/**
+ * Method to set the game over.
+ */
+function gameOver() {
+  stopLoop();
+  document.removeEventListener("keydown", onKeydown);
 }

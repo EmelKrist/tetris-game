@@ -11,6 +11,7 @@ export class Tetris {
   constructor() {
     this.playfield;
     this.tetromino;
+    this.isGameOver = false;
     this.init();
   }
 
@@ -141,6 +142,10 @@ export class Tetris {
     for (let row = 0; row < matrixSize; row++) {
       for (let column = 0; column < matrixSize; column++) {
         if (!this.tetromino.matrix[row][column]) continue;
+        if (this.isOutsideOfTopBoard(row)) {
+          this.isGameOver = true;
+          return;
+        }
 
         this.playfield[this.tetromino.row + row][
           this.tetromino.column + column
@@ -150,6 +155,15 @@ export class Tetris {
 
     this.processFilledRows();
     this.generateTetromino();
+  }
+
+  /**
+   * Method to check if tetromino is outside of the top board.
+   * @param {Number} row
+   * @returns true/false
+   */
+  isOutsideOfTopBoard(row) {
+    return this.tetromino.row + row < 0;
   }
 
   /**
@@ -186,7 +200,7 @@ export class Tetris {
 
   /**
    * Method to drop rows above.
-   * @param {Number} rowToDelete 
+   * @param {Number} rowToDelete
    */
   dropRowsAbove(rowToDelete) {
     for (let row = rowToDelete; row > 0; row--) {
