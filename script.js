@@ -6,12 +6,14 @@ import {
   rotateMatrix,
 } from "./utilities.js";
 
+let requestId;
+let timeoutId;
 const tetris = new Tetris();
 const cells = document.querySelectorAll(".grid>div");
 
 initKeydown();
 
-draw();
+moveDown();
 
 function initKeydown() {
   document.addEventListener("keydown", onKeydown);
@@ -42,6 +44,8 @@ function onKeydown(event) {
 function moveDown() {
   tetris.moveTetrominoDown();
   draw();
+  stopLoop();
+  startLoop();
 }
 
 /**
@@ -66,6 +70,24 @@ function moveRight() {
 function rotate() {
   tetris.rotateTetromino();
   draw();
+}
+
+/**
+ * Method to start auto-movement of tetrominoes.
+ */
+function startLoop() {
+  timeoutId = setTimeout(
+    () => (requestId = requestAnimationFrame(moveDown)),
+    700
+  );
+}
+
+/**
+ * Method to stop auto-movement of tetrominoes.
+ */
+function stopLoop() {
+  cancelAnimationFrame(requestId);
+  clearTimeout(timeoutId);
 }
 
 /**
